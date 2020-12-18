@@ -1,0 +1,14 @@
+{
+    "folders": [
+        {
+            "path": "clean-blog"
+        },
+        {
+            "name": "beginning-node",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "git.ignoreLimitWarning": true
+    }
+}
