@@ -32,3 +32,4 @@ app.get('/post', (req, res) => {
     res.render('post')
 })
 
+//test push
