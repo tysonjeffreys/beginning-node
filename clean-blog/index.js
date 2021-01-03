@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 app.get('/', async (req,res) => {
     const blogposts = await BlogPost.find({})
     //BlogPost.find() returns and array of objects from the database
-    console.log(blogposts)
+    //console.log(blogposts)
     res.render('index', {
         blogposts
     });
@@ -43,9 +43,13 @@ app.get('/contact', (req, res) => {
     res.render('contact')
 })
 
-app.get('/post', (req, res) => {
+app.get('/post/:id', async (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/post.html'))
-    res.render('post')
+    const blogpost = await BlogPost.findById(req.params.id)
+    console.log(blogpost)
+    res.render('post', {
+        blogpost
+    })
 })
 
 app.get('/posts/new', (req, res) => {
@@ -65,8 +69,27 @@ app.post('/posts/store', (req,res) => {
 //same function as above but with async/await
 app.post('/posts/store', async (req,res) => {
     await BlogPost.create(req.body)
+        console.log('This is the request object from create.ejs ' + req.body.title)
         res.redirect('/')
     })
+
+
+//Find a specific post by searching the titles
+app.get('/posts/:find', async(req, res) => {
+    var search = req.query.find
+    console.log(search)
+   
+      
+    await BlogPost.find({title: /${search}/}, (error, blogspot) => {
+        
+        console.log(error, blogspot)
+    })
+    res.redirect('/')    
+
+
+})
+
+
 
 app.get('/', async (req,res) => {
     const blogposts = await BlogPost.find({})
