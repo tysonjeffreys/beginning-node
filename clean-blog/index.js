@@ -76,15 +76,17 @@ app.post('/posts/store', async (req,res) => {
 
 //Find a specific post by searching the titles
 app.get('/posts/:find', async(req, res) => {
-    var search = req.query.find
-    console.log(search)
-   
+    let search = `${req.query.title}`
+    const regex = new RegExp(search, 'i')
+    console.log(req.query)
       
-    await BlogPost.find({title: /${search}/}, (error, blogspot) => {
+    const titleposts = await BlogPost.find({title:{$regex: regex}}, (error, blogspot) => {
         
         console.log(error, blogspot)
     })
-    res.redirect('/')    
+    res.render('titlesearch', {
+        titleposts
+    });    
 
 
 })
