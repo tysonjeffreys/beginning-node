@@ -2,12 +2,15 @@ const express = require('express')
 const app = new express()
 const path = require('path')
 const ejs = require('ejs')
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const fileUpload = require('express-fileUpload')
+
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(fileUpload())
 
 const BlogPost = require('./models/Blogpost.js')
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
@@ -67,14 +70,19 @@ app.post('/posts/store', (req,res) => {
 */
 
 //same function as above but with async/await
-app.post('/posts/store', async (req,res) => {
-    await BlogPost.create(req.body)
-        console.log('This is the request object from create.ejs ' + req.body.title)
+app.post('/posts/store', (req,res) => {
+    let image = req.files.image;
+    image.mv(path.resolve(__dirname,'public/img', image.name),    
+    async (error) => { 
+        await BlogPost.create({
+            ...req.body,
+            image: '/img/' + image.name
+        })
+        //console.log('This is the request object from create.ejs ' + req.body.title)
         res.redirect('/')
     })
+    })
 
-
-//Find a specific post by searching the titles
 app.get('/posts/:find', async(req, res) => {
     let search = `${req.query.title}`
     const regex = new RegExp(search, 'i')
@@ -90,8 +98,6 @@ app.get('/posts/:find', async(req, res) => {
 
 
 })
-
-
 
 app.get('/', async (req,res) => {
     const blogposts = await BlogPost.find({})

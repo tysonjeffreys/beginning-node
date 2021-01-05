@@ -32,7 +32,7 @@
           <div class="control-group">
             <div class="form-group floating-label-form-group controls">
               <label>Find</label>
-              <input type="text" class="form-control" placeholder="Search for..." id="title" name="find">
+              <input type="text" class="form-control" placeholder="Search for..." id="title" name="title">
               <p class="help-block text-danger"></p>
             </div>
           </div>
@@ -60,8 +60,8 @@
             </h3>
           </a>
           <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on September 24, 2019</p>
+            <a href="#"><%= blogposts[i].username %></a>
+            on <%= blogposts[i].datePosted.toDateString() %></p>
         </div>
         <hr>
         <% } %>

@@ -9,7 +9,7 @@
   <%- include('layouts/nav'); -%>
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+  <header class="masthead" style="background-image: url('<%= blogpost.image %>')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
@@ -18,8 +18,8 @@
             <h1><%= blogpost.title %></h1>
             <h2 class="subheading"><%= blogpost.body %></h2>
             <span class="meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on August 24, 2019</span>
+              <a href="#"><%= blogpost.username %></a>
+              on <%= blogpost.datePosted.toDateString() %></span>
           </div>
         </div>
       </div>

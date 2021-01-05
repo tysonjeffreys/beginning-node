@@ -49,14 +49,14 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <% for (var i = 0;i < blogposts.length;i++)  { %> 
+        <% for (var i = 0;i < titleposts.length;i++)  { %> 
         <div class="post-preview">
-          <a href="/post/<%= blogposts[i]._id %>">
+          <a href="/post/<%= titleposts[i]._id %>">
             <h2 class="post-title">
-              <%= blogposts[i].title %>
+              <%= titleposts[i].title %>
             </h2>
             <h3 class="post-subtitle">
-              <%= blogposts[i].body %>
+              <%= titleposts[i].body %>
             </h3>
           </a>
           <p class="post-meta">Posted by
