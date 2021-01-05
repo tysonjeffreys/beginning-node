@@ -21,6 +21,15 @@ app.listen(4000, () => {
 })
 
 
+const validateMiddleWare = (req,res,next) => {
+    if(req.files == null || req.body.title == null || req.body.title == null) {
+        return res.redirect('/posts/new')
+    }
+    next()
+}
+
+app.use('/posts/store', validateMiddleWare)
+
 /*
 app.get('/', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/index.html'))
@@ -105,3 +114,15 @@ app.get('/', async (req,res) => {
         blogposts: blogposts
     });
 })
+
+/*
+
+const validateMiddleWare = (req,res,next) => {
+    if(req.files == null || req.body.title == null || req.body.title == null) {
+        return res.redirect('/posts/new')
+    }
+    next()
+}
+
+app.use('/posts/store', validateMiddleWare)
+*/
