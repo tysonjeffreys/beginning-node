@@ -15,14 +15,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
 
+
 //const BlogPost = require('./models/Blogpost.js')
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
-
-
 app.listen(4000, () => {
     console.log('App listening in port 4000')
 })
-
 
 
 //middleware to validate empty field in new post. If empty post not made and redirection
@@ -38,6 +36,7 @@ app.use('/posts/store', validateMiddleWare)
 
 //refactoring the home page
 app.get('/', homeController)
+
 /*
 app.get('/', async (req,res) => {
     const blogposts = await BlogPost.find({})
@@ -48,8 +47,6 @@ app.get('/', async (req,res) => {
     });
 })
 */
-
-
 
 app.get('/about', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/about.html'))
@@ -97,8 +94,6 @@ app.post('/posts/store', async (req,res) => {
         //console.log('This is the request object from create.ejs ' + req.body.title)
         res.redirect('/')
     })
-     
-       
 })
 
 app.get('/posts/:find', async(req, res) => {
@@ -113,15 +108,5 @@ app.get('/posts/:find', async(req, res) => {
     res.render('titlesearch', {
         titleposts
     });    
-
-
-})
-/*
-app.get('/', async (req,res) => {
-    const blogposts = await BlogPost.find({})
-    res.render('index', {
-        blogposts: blogposts
-    });
 })
 
-*/
