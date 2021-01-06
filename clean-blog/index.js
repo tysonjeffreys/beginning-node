@@ -5,6 +5,9 @@ const ejs = require('ejs')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileUpload')
+const homeController = require('./controllers/home')
+const newPostController = require('./controllers/newPost')
+const getPostController = require('./controllers/getPost')
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -12,7 +15,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
 
-const BlogPost = require('./models/Blogpost.js')
+//const BlogPost = require('./models/Blogpost.js')
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
 
 
@@ -21,21 +24,21 @@ app.listen(4000, () => {
 })
 
 
+
+//middleware to validate empty field in new post. If empty post not made and redirection
+//to post page
 const validateMiddleWare = (req,res,next) => {
     if(req.files == null || req.body.title == null || req.body.title == null) {
         return res.redirect('/posts/new')
     }
     next()
 }
-
 app.use('/posts/store', validateMiddleWare)
 
+
+//refactoring the home page
+app.get('/', homeController)
 /*
-app.get('/', (req, res) => {
-    //res.sendFile(path.resolve(__dirname, 'pages/index.html'))
-    res.render('index')
-})
-*/
 app.get('/', async (req,res) => {
     const blogposts = await BlogPost.find({})
     //BlogPost.find() returns and array of objects from the database
@@ -44,6 +47,9 @@ app.get('/', async (req,res) => {
         blogposts
     });
 })
+*/
+
+
 
 app.get('/about', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/about.html'))
@@ -55,6 +61,9 @@ app.get('/contact', (req, res) => {
     res.render('contact')
 })
 
+//refactor get post by id
+app.get('/post/:id', getPostController)
+/*
 app.get('/post/:id', async (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/post.html'))
     const blogpost = await BlogPost.findById(req.params.id)
@@ -63,10 +72,8 @@ app.get('/post/:id', async (req, res) => {
         blogpost
     })
 })
-
-app.get('/posts/new', (req, res) => {
-    res.render('create')
-})
+*/
+app.get('/posts/new', newPostController)
 
 /*
 app.post('/posts/store', (req,res) => {
@@ -79,7 +86,7 @@ app.post('/posts/store', (req,res) => {
 */
 
 //same function as above but with async/await
-app.post('/posts/store', (req,res) => {
+app.post('/posts/store', async (req,res) => {
     let image = req.files.image;
     image.mv(path.resolve(__dirname,'public/img', image.name),    
     async (error) => { 
@@ -90,7 +97,9 @@ app.post('/posts/store', (req,res) => {
         //console.log('This is the request object from create.ejs ' + req.body.title)
         res.redirect('/')
     })
-    })
+     
+       
+})
 
 app.get('/posts/:find', async(req, res) => {
     let search = `${req.query.title}`
@@ -107,7 +116,7 @@ app.get('/posts/:find', async(req, res) => {
 
 
 })
-
+/*
 app.get('/', async (req,res) => {
     const blogposts = await BlogPost.find({})
     res.render('index', {
@@ -115,14 +124,4 @@ app.get('/', async (req,res) => {
     });
 })
 
-/*
-
-const validateMiddleWare = (req,res,next) => {
-    if(req.files == null || req.body.title == null || req.body.title == null) {
-        return res.redirect('/posts/new')
-    }
-    next()
-}
-
-app.use('/posts/store', validateMiddleWare)
 */
