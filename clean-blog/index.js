@@ -48,3 +48,71 @@ app.get('/contact', (req, res) => {
 })
 
 
+
+//testing middleware understanding
+
+/*
+app.use('/user/:id', (req,res,next) => {
+    console.log('Request URL', req.originalUrl)
+    next()
+},(req,res,next) => {
+    console.log('Request Type:', req.method)
+    res.send('Hello Hyperion')
+})
+
+*/
+
+function logOriginalUrl(req,res,next) {
+    console.log('Request URL:', req.originalUrl)
+    next()
+}
+
+function logRequestType(req,res,next) {
+    console.log('Request Type:', req.method)
+    next()
+}
+
+logStuff = [logOriginalUrl, logRequestType]
+app.get('/user/:id', logStuff, (req,res,next) => {
+    res.send('User Info')
+})
+
+
+/*
+app.use((req,res,next) => {
+    console.log('Time:', Date.now())
+    console.log('Request Type:', req.method)
+    res.send('Time:')
+    
+})
+*/
+
+
+/*
+app.get('/user/:id', (req,res,anothernext) => {
+    console.log('ID:', req.params.id)
+    anothernext()
+},
+    (req,res,next) => {
+        res.send('User Info')
+    })
+
+app.get('/user/:id', (req,res,next) => {
+    res.send(req.params.id)
+})
+*/
+
+
+/*
+app.get('/user/:id', (req, res, next) => {
+    if(req.params.id === '0') next('route')
+    else next()
+}, (req, res, next) => {
+    res.send('regular')
+})
+
+app.get('/user/:id', (req, res, next) => {
+    res.send('special')
+})
+
+*/
