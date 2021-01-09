@@ -15,6 +15,8 @@ const findPostController = require('./controllers/findPost')
 const validateMiddleware = require('./middleWare/validationMiddleware')
 const newUserController = require('./controllers/newUser')
 const storeUserController = require('./controllers/storeUser')
+const loginController = require('./controllers/login')
+const loginUserController = require('./controllers/loginUser')
 
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
 app.listen(4000, () => {
@@ -36,6 +38,8 @@ app.post('/posts/store', storePostController)
 app.get('/posts/:find', findPostController)
 app.get('/auth/register', newUserController)
 app.post('/users/register', storeUserController)
+app.get('/auth/login', loginController)
+app.post('/users/login', loginUserController)
 
 app.get('/about', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/about.html'))
@@ -52,7 +56,7 @@ app.get('/contact', (req, res) => {
 //testing middleware understanding
 
 /*
-app.use('/user/:id', (req,res,next) => {
+app.use('/user/:id', (req,res,next) => {    adjustment 
     console.log('Request URL', req.originalUrl)
     next()
 },(req,res,next) => {
