@@ -68,7 +68,7 @@ app.get('/contact', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/contact.html'))
     res.render('contact')
 })
-
+app.use((req,res) => res.render('notfound'))
 
 
 //testing middleware understanding
