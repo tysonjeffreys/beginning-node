@@ -17,11 +17,12 @@ const newUserController = require('./controllers/newUser')
 const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
 const loginUserController = require('./controllers/loginUser')
-const expressSession = require('express-session');
+const expressSession = require('express-session')
 
 const validateMiddleware = require('./middleware/validationMiddleware')
 const authMiddleware = require('./middleware/authMiddleware')
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware')
+const logoutController = require('./controllers/logout')
 
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
 app.listen(4000, () => {
@@ -56,6 +57,7 @@ app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController)
 app.post('/users/register', redirectIfAuthenticatedMiddleware, storeUserController)
 app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController)
 app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController)
+app.get('/auth/logout', logoutController)
 
 app.get('/about', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/about.html'))
