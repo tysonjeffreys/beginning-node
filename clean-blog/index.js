@@ -6,17 +6,22 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileUpload')
 
+
 //controllers
 const homeController = require('./controllers/home')
 const newPostController = require('./controllers/newPost')
-const getPostController = require('./controllers/getPost')
 const storePostController = require('./controllers/storePost')
+const getPostController = require('./controllers/getPost')
 const findPostController = require('./controllers/findPost')
-const validateMiddleware = require('./middleWare/validationMiddleware')
 const newUserController = require('./controllers/newUser')
 const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
 const loginUserController = require('./controllers/loginUser')
+const expressSession = require('express-session');
+
+const validateMiddleware = require('./middleware/validationMiddleware')
+const authMiddleware = require('./middleware/authMiddleware')
+const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware')
 
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
 app.listen(4000, () => {
@@ -28,18 +33,22 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
+
 app.use('/posts/store', validateMiddleware)
+
+app.use(expressSession({
+    secret: 'keyboard cat'}))
 
 
 app.get('/', homeController)
 app.get('/post/:id', getPostController)
-app.get('/posts/new', newPostController)
-app.post('/posts/store', storePostController)
+app.get('/posts/new', authMiddleware, newPostController)
+app.post('/posts/store', authMiddleware, storePostController)
 app.get('/posts/:find', findPostController)
-app.get('/auth/register', newUserController)
-app.post('/users/register', storeUserController)
-app.get('/auth/login', loginController)
-app.post('/users/login', loginUserController)
+app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController)
+app.post('/users/register', redirectIfAuthenticatedMiddleware, storeUserController)
+app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController)
+app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController)
 
 app.get('/about', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/about.html'))
