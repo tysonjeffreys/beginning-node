@@ -5,7 +5,7 @@ const ejs = require('ejs')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileUpload')
-const flash = require('connect-flash');
+
 
 
 //controllers
@@ -18,14 +18,16 @@ const newUserController = require('./controllers/newUser')
 const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
 const loginUserController = require('./controllers/loginUser')
-const expressSession = require('express-session')
+const expressSession = require('express-session');
+const logoutController = require('./controllers/logout')
 
 const validateMiddleware = require('./middleware/validationMiddleware')
 const authMiddleware = require('./middleware/authMiddleware')
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware')
-const logoutController = require('./controllers/logout')
+const flash = require('connect-flash');
 
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
+
 app.listen(4000, () => {
     console.log('App listening in port 4000')
 })
@@ -47,7 +49,8 @@ global.loggedIn = null;
 app.use("*", (req,res,next) => {
     loggedIn = req.session.userId;
     next()
-})
+});
+
 app.use(flash());
 
 app.get('/', homeController)
