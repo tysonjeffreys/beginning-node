@@ -5,6 +5,7 @@ const ejs = require('ejs')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileUpload')
+const flash = require('connect-flash');
 
 
 //controllers
@@ -35,6 +36,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(fileUpload())
 
+
 app.use('/posts/store', validateMiddleware)
 
 app.use(expressSession({
@@ -46,7 +48,7 @@ app.use("*", (req,res,next) => {
     loggedIn = req.session.userId;
     next()
 })
-
+app.use(flash());
 
 app.get('/', homeController)
 app.get('/post/:id', getPostController)

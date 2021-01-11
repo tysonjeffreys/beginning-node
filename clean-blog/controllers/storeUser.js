@@ -7,8 +7,8 @@ module.exports = (req,res) => {
         console.log(error)
         if(error) {
             const validationErrors = Object.keys(error.errors).map(key => error.errors[key].message)
-            req.session.validationErrors = validationErrors
-            console.log(validationErrors)
+            //req.session.validationErrors = validationErrors
+            req.flash('validationErrors', validationErrors)
             return res.redirect('/auth/register')
         }
         res.redirect('/')
