@@ -26,6 +26,12 @@ const authMiddleware = require('./middleware/authMiddleware')
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware')
 const flash = require('connect-flash');
 
+//testing knowlege of mongooge and creating Schemas/Models
+const newBookController = require('./controllers/newBook')
+const storeBooksController = require('./controllers/storeBooks')
+
+
+
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
 
 app.listen(4000, () => {
@@ -63,6 +69,12 @@ app.post('/users/register', redirectIfAuthenticatedMiddleware, storeUserControll
 app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController)
 app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController)
 app.get('/auth/logout', logoutController)
+
+//testing knowlege of mongooge and creating Schemas/Models
+app.get('/postBook/new', newBookController)
+app.post('/posts/book', storeBooksController)
+
+
 
 app.get('/about', (req, res) => {
     //res.sendFile(path.resolve(__dirname, 'pages/about.html'))
