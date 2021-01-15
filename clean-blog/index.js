@@ -3,7 +3,7 @@ const app = new express()
 const path = require('path')
 const ejs = require('ejs')
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
+//const bodyParser = require('body-parser')
 const fileUpload = require('express-fileUpload')
 
 
@@ -40,8 +40,8 @@ app.listen(4000, () => {
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 app.use(fileUpload())
 
 
