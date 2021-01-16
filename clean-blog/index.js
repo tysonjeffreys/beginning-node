@@ -29,7 +29,8 @@ const flash = require('connect-flash');
 //testing knowlege of mongooge and creating Schemas/Models
 const newBookController = require('./controllers/newBook')
 const storeBooksController = require('./controllers/storeBooks')
-
+const getBooksController = require('./controllers/getBooks')
+const getSingleBookController = require('./controllers/getSingleBook')
 
 
 mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
@@ -70,9 +71,12 @@ app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController)
 app.post('/users/login', redirectIfAuthenticatedMiddleware, loginUserController)
 app.get('/auth/logout', logoutController)
 
-//testing knowlege of mongooge and creating Schemas/Models
+//testing knowlege of mongoose and creating Schemas/Models
 app.get('/postBook/new', newBookController)
 app.post('/posts/book', storeBooksController)
+app.get('/books', getBooksController)
+app.get('/book/:id', getSingleBookController)
+
 
 
 
