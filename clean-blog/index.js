@@ -37,7 +37,22 @@ mongoose.connect('mongodb://localhost/my_database', {useNewURLParser:true})
 
 app.listen(4000, () => {
     console.log('App listening in port 4000')
+    
 })
+
+console.log('Current Directory:', __dirname);
+path1 = path.resolve('users/admin', 'readme.md')
+console.log(path1)
+
+path2 = path.resolve('users', 'admin', 'readme.md')
+console.log(path2)
+
+path3 = path.resolve('/users/admin', "readme.md")
+console.log(path3)
+
+path4 = path.resolve(__dirname, '..', 'public/img')
+console.log(path4)
+
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -76,6 +91,8 @@ app.get('/postBook/new', newBookController)
 app.post('/posts/book', storeBooksController)
 app.get('/books', getBooksController)
 app.get('/book/:id', getSingleBookController)
+
+
 
 
 
