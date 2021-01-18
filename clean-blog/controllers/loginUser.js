@@ -5,6 +5,9 @@ module.exports = (req, res) => {
     const { username, password } = req.body;
 
     User.findOne({username:username}, (error, user) => {
+        const { username } = user
+        //console.log("username:", username)
+        console.log(user)
         if(user) {
             bcrypt.compare(password, user.password, (error, same) => {
                 if(same) {
